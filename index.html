@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/x-icon" href="https://media-exp1.licdn.com/dms/image/D4E03AQG5xm-zlkb7hQ/profile-displayphoto-shrink_800_800/0/1669646555956?e=2147483647&v=beta&t=ggw1dMuFkm7jw30FYu8xUNVdUOw_2v04Rkwp4cwo9CA">
+	<script src="https://kit.fontawesome.com/a502a8bc22.js" crossorigin="anonymous"></script>
+	<title>Let's Calculate</title>
+</head>
+<body id="body" onload="loading();">
+
+
+<div class="title_pack" id="title_pack">
+	<h1 class="title_game" id="title_game">Calculate</h1>
+	<h4 class="sub_title_game" id="sub_title_game">a game by<br>haydar hilmy</h4>
+</div>
+
+<div class="pilihan_mode" id="pilihan_mode">
+	<button id="button_pilihan1" value="tambah" onclick="chosmode(this.value);" onmouseout="leavetrigger(this)" onmouseover="icontrigger(this)" class="button_pilihan">Pertambahan</button>
+	<button id="button_pilihan2" value="kurang" onclick="chosmode(this.value);" onmouseout="leavetrigger(this)" onmouseover="icontrigger(this)" class="button_pilihan">Perkurangan</button>
+	<button id="button_pilihan3" value="kali" onclick="chosmode(this.value);" onmouseout="leavetrigger(this)" onmouseover="icontrigger(this)" class="button_pilihan">Perkalian</button>
+	<button id="button_pilihan4" value="bagi" onclick="chosmode(this.value);" onmouseout="leavetrigger(this)" onmouseover="icontrigger(this)" class="button_pilihan">Pembagian</button>
+</div>
+
+<div class="pilihan_difficult" id="pilihan_difficult">
+	<button class="button_pilihan_diffi" id="easybtn" onclick="diffi(this.value);" value="easy">Easy</button>
+	<button class="button_pilihan_diffi" id="mediumbtn" onclick="diffi(this.value);" value="medium">Medium</button>
+	<button class="button_pilihan_diffi" id="hardbtn" onclick="diffi(this.value);" value="hard">Hard</button>
+	<button class="button_pilihan_diffi" id="extremebtn" onclick="diffi(this.value);" value="extreme">Extreme</button>
+</div>
+
+
+<div class="popup" id="popup">
+	<h4 class="title_popup">Settings</h4>
+	<label id="title_toggle_theme" for="toggle_theme">Classic Theme</label>
+	<label for="theme_inp" onclick="theme()" id="toggle_theme" class="fa-solid fa-toggle-off toggle_theme"></label>
+	<input id="theme_inp" hidden type="checkbox">
+	<label for="myname">Type your name</label>
+	<input onchange="isinamaku(this.value);" class="myname_input" id="myname" type="text" placeholder="isi namamu">
+
+	<button onclick="tutup_popup();" class="back_btn">Kembali</button>
+</div>
+
+<div class="popup2_field" id="popup2">
+	<div class="popup2_sub">
+		<p id="indic_nama"></p>
+	</div>
+</div>
+
+
+<div class="navbar">
+	<button onclick="buka_popup();" class="navbar_button"><i class="fa-solid fa-gear"></i></button>
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+const bdy = document.getElementById('body');
+var ttlpck = document.getElementById("title_pack");
+var ttlgame = document.getElementById("title_game");
+var subttlgame = document.getElementById("sub_title_game");
+
+// pilihan mmode
+var pmode = document.getElementById("pilihan_mode");
+var btnp1 = document.getElementById("button_pilihan1");
+var btnp2 = document.getElementById("button_pilihan2");
+var btnp3 = document.getElementById("button_pilihan3");
+var btnp4 = document.getElementById("button_pilihan4");
+
+
+// popup
+
+var popup = document.getElementById("popup");
+var togtheme = document.getElementById("toggle_theme");
+var theme_inp = document.getElementById("theme_inp");
+var ttl_togtheme = document.getElementById("title_toggle_theme");
+var isinama = 0;
+
+// popup2
+var popup2 = document.getElementById("popup2");
+
+
+// difficulty choose
+var dif_pack = document.getElementById("pilihan_difficult");
+
+var easybtn = document.getElementById("easybtn");
+var mediumbtn = document.getElementById("mediumbtn");
+var hardbtn = document.getElementById("hardbtn");
+var extremebtn = document.getElementById("extremebtn");
+
+
+function buka_popup(){
+	i = -100;
+	const intpopup = setInterval(function(){
+		if (i < 0) {
+			i++;
+			popup.style.top = i + "%";
+		} else {clearInterval(intpopup);}
+	}, 1);
+}
+
+function isinamaku(x) {
+	let nama = document.getElementById('indic_nama');
+	isinama++;
+	if(x != ""){
+	if (isinama < 2) {
+		nama.innerHTML = "Oke " + x + ", namamu sudah terInput";
+		showpopup2();
+	} else  if(isinama < 3) {
+		nama.innerHTML = "Namamu ganti " + x;
+		showpopup2();
+	} else if (isinama >= 3) {
+		nama.innerHTML = "ganti nama teros, " + x;
+		showpopup2();
+	}
+}else{
+	// jika inpt kosong
+	nama.innerHTML = "Loh malah hapus nama";
+	showpopup2();
+}
+}
+
+
+function showpopup2() {
+	o = -100;
+	const sliding_popup2_open = setInterval(function(){
+		if(o < 5){
+			o++;
+			popup2.style.top = o + "%";
+		} else if (o >= 5) {
+			clearInterval(sliding_popup2_open);
+		}
+	}, 1);
+	setTimeout(function() {
+		const sliding_popup2_close = setInterval(function(){
+			if (o > -100) {
+				o--;
+				popup2.style.top = o + "%";
+			} else {
+				clearInterval(sliding_popup2_close);
+			}
+		}, 1);
+	}, 2000);
+}
+
+
+function tutup_popup(){
+	j = 0;
+	const intpopupclose = setInterval(function(){
+		if (j > -100) {
+			j = j - 2;
+			popup.style.top = j + "%";
+		} else {clearInterval(intpopupclose);}
+	}, 1);
+}
+
+togtheme.addEventListener('click', function () {
+    if (theme_inp.checked) {
+    	bdy.style.backgroundColor = "#e74c3c";
+    	ttl_togtheme.innerHTML = "Classic Theme";
+    	t = 0;
+    	const int_tog = setInterval(function(){if(t < 15){t++;ttl_togtheme.style.transform = "translateY(" + t + "px)";}else {clearInterval(int_tog);ttl_togtheme.style.transform = "translateY(0px)";}}, 1);
+    	
+    	togtheme.classList = "fa-solid fa-toggle-off toggle_theme";
+    } else {
+    	bdy.style.backgroundColor = "#2f3542";
+    	ttl_togtheme.innerHTML = "Dark Theme";
+    	t = 0;
+    	const int_tog = setInterval(function(){if(t < 15){t++;ttl_togtheme.style.transform = "translateY(" + t + "px)";}else {clearInterval(int_tog);ttl_togtheme.style.transform = "translateY(0px)";}}, 1);
+    	togtheme.classList = "fa-solid fa-toggle-on toggle_theme";
+    }
+  });
+
+
+// HOVER A BUTTON MODE
+function icontrigger(x) {
+	xrdm = Math.floor((Math.random() * 10) + 1);
+	xrdm2 = Math.floor((Math.random() * 10) + 1);
+	xresultplus = xrdm + xrdm2;
+	xresultmin = xrdm - xrdm2;
+	xresultmulti = xrdm * xrdm2;
+	xresultdiv = Math.round((xrdm / xrdm2) * 10) / 10;
+	if (x.innerHTML == "Pertambahan") {x.innerHTML = xrdm + " + " + xrdm2 + " = " + xresultplus} else
+	if (x.innerHTML == "Perkurangan") {x.innerHTML = xrdm + " - " + xrdm2 + " = " + xresultmin} else 
+	if (x.innerHTML == "Perkalian") {x.innerHTML = xrdm + " x " + xrdm2 + " = " + xresultmulti} else 
+	if (x.innerHTML == "Pembagian") {x.innerHTML = xrdm + " / " + xrdm2 + " = " + xresultdiv}
+}
+function leavetrigger(x) {
+	if (x.innerHTML == xrdm + " + " + xrdm2 + " = " + xresultplus) {x.innerHTML = "Pertambahan"} else
+	if (x.innerHTML == xrdm + " - " + xrdm2 + " = " + xresultmin) {x.innerHTML = "Perkurangan"} else 
+	if (x.innerHTML == xrdm + " x " + xrdm2 + " = " + xresultmulti) {x.innerHTML = "Perkalian"} else 
+	if (x.innerHTML == xrdm + " / " + xrdm2 + " = " + xresultdiv) {x.innerHTML = "Pembagian"}
+}
+
+
+function loading() {
+	pmode.style.display = "none";
+	setTimeout(function() {ttlgame.style.animationName = "showit";subttlgame.style.animationName = "showit";}, 500);
+	setTimeout(function() {ttlgame.style.opacity = 1;subttlgame.style.opacity = 1;}, 2000);
+	setTimeout(function() {
+		i = 100;
+		const intmoveup = setInterval(function(){
+				if(i > 0){
+					i--;
+					ttlpck.style.transform = "translateY("+ i + "%)";
+					} else {subttlgame.innerHTML = "";clearInterval(intmoveup);show_mode_permainan();}
+			}, 1);
+	}, 4000);
+}
+// function show_mode_permainan() {
+// 	var text_mode_pm = "pilih mode permainan";
+// 	pmode.style.display = "flex";
+// 	var t = 0;
+// 	const txttyping = setInterval(function(){
+// 	subttlgame.innerHTML += text_mode_pm.charAt(t);
+// 	t++;
+// 	if(subttlgame.innerHTML == text_mode_pm){clearInterval(txttyping);}
+// 	}, 50);
+// }
+
+function show_mode_permainan() {
+	pmode.style.display = "flex";
+	pmode_permainan = "pilih mode permainan";
+	typing_effect_subttl(pmode_permainan);
+}
+
+var t = 0;
+function typing_effect_subttl(txt){
+const txttyping = setInterval(function(){
+	subttlgame.innerHTML += txt.charAt(t);
+	t++;
+	if(subttlgame.innerHTML == txt){clearInterval(txttyping);t = 0;}
+	}, 50);
+}
+
+
+// MEMILIH MODE 
+let mymode = "null";
+function chosmode(mode) {
+		pmode.style.display = "none";
+		dif_pack.style.display = "flex";
+		dif_pack.style.animationName = "blinkit";
+		mymode = mode;
+		typing_effect_subttl("pilih tingkat kesulitan");
+}
+
+function diffi(x){
+	if (x == easybtn.value) {
+		easybtn.style.animationName = "blinkit";
+		setTimeout(function(){easybtn.style.animationName = ""}, 100);
+	}
+	else if (x == mediumbtn.value){
+		mediumbtn.style.animationName = "blinkit";
+		setTimeout(function(){mediumbtn.style.animationName = ""}, 100);
+	}
+	else if (x == hardbtn.value){
+		hardbtn.style.animationName = "blinkit";
+		setTimeout(function(){hardbtn.style.animationName = ""}, 100);
+	}
+	else if (x == extremebtn.value){
+		extremebtn.style.animationName = "blinkit";
+		setTimeout(function(){extremebtn.style.animationName = ""}, 100);
+	}
+}
+
+
+</script>
+
+<style type="text/css">
+body{font-family: helvetica,sans-serif;background-color: #e74c3c;}
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+.popup{
+	position: absolute;
+	top: -100%;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(15px);
+	color: #fff;
+}
+.toggle_theme{
+	font-size: 1.7rem;
+	margin: 0 0 20px 0;
+}
+.myname_input{
+	padding: 8px 12px;
+	font-size: 0.9rem;
+	background-color: #fff;
+	border: 0;
+	width: 180px;
+	margin: 10px 0 0 0;
+	border-radius: 5px;
+}
+.back_btn{
+	width: 180px;
+	padding: 8px 12px;
+	font-size: 0.9rem;
+	border: 0;
+	border-radius: 5px;
+	margin: 10px 0 0 0;
+	background-color: #cc2b19;
+	color: #fff;
+}
+.back_btn:hover{
+	background-color: #e3301c;
+}
+
+
+.popup2_field{
+	position: fixed;
+	top: -100%;
+	left: 0;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+.popup2_sub{
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+	background-color: #fff;
+	text-align: center;
+	padding: 5px 30px;
+	border-radius: 5px;
+}
+
+
+
+.navbar{
+	position: absolute;
+	bottom: 0px;
+	margin: 0;
+	left: 0;
+	height: auto;
+	width: 100%;
+	background-color: #cc2b19;
+}
+.navbar_button{
+	border: 0;
+	background-color: transparent;
+	padding: 10px;
+	font-size: 1.4rem;
+	color: #fff;
+	transition-duration: 0.5s;
+}
+.navbar_button:hover{
+	transition-duration: 0.5s;
+	transform: rotate(450deg);
+}
+
+.title_pack{
+  	text-align: center;
+  	transform: translateY(100%);
+}
+.title_game, .sub_title_game{
+	opacity: 0;
+	color: #fff;text-align: center;
+	animation-duration: 0.5s;
+	animation-delay: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+}
+@keyframes showit{
+	0%{
+		opacity: 0;
+	}
+	100%{
+		opacity: 1;
+	}
+}
+
+.pilihan_mode, .pilihan_difficult{
+	display: none;
+	text-align: center;
+	flex-direction: column;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	animation-duration: 0.1s;
+	animation-timing-function: linear;
+	animation-iteration-count: 2;
+}
+.button_pilihan, .button_pilihan_diffi{
+	width: 200px;
+	border: 2px solid #ecf0f1;
+	background-color: transparent;
+	padding: 10px 12px;
+	font-size: 1rem;
+	color: #ecf0f1;
+	margin: 10px 0;
+	display: flex;
+	justify-content: center;
+	transition-duration: 0.1s;
+	animation-duration: 0.1s;
+	animation-timing-function: linear;
+	animation-iteration-count: 2;
+}
+@keyframes blinkit{
+	0%{opacity: 0}
+	25%{opacity: 1}
+	50%{opacity: 0}
+	75%{opacity: 1}
+	100%{opacity: 0}
+}
+.button_pilihan:hover{
+	transition-duration: 0.2s;
+	background-color: #ecf0f1;
+	color: #e74c3c;
+	transform: scale(1.01);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+</style>
